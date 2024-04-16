@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -11,7 +13,12 @@ import java.io.IOException;
 public class EscolherEditavelController {
     @FXML
     private Button regressa;
-
+    @FXML
+    TableView<Baralho> tabela;
+    @FXML
+    TableColumn<Baralho,String> colunaNome;
+    @FXML
+    TableColumn<Baralho,Integer> colunaCartas;
     @FXML
     protected void aoClicarRegressa(){
         FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenuController.class.getResource("main.fxml"));

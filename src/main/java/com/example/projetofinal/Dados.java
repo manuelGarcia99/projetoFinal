@@ -17,9 +17,9 @@ public class Dados {
             Connection conn = DriverManager.getConnection(url, user, password);
             Statement stmt = conn.createStatement();
 
-            String query = "SELECT DISTINCT C1.NomeBaralho, (SELECT " +
-                    " COUNT(*) FROM cartas C2" +
-                    " WHERE C2.NomeBaralho = C1.NomeBaralho) AS Cartas FROM cartas C1";
+            String query = "SELECT DISTINCT B.NomeBaralho, (SELECT " +
+                    " COUNT(*) FROM Cartas C" +
+                    " WHERE C.NomeBaralho = B.NomeBaralho) AS Cartas FROM Baralhos B";
 
             ResultSet rs = stmt.executeQuery(query);
 
@@ -42,7 +42,7 @@ public class Dados {
         return lista;
     }
 
-    public static void apagaBaralho(String nomeDoBaralho){//repensar
+    public static void apagaBaralho(String nomeDoBaralho){
         String url = "jdbc:mysql://localhost:3306/projetolicenciatura";
         String user = "root";
         String password = "SimpsonsTheMovie2012";
@@ -54,6 +54,13 @@ public class Dados {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1,nomeDoBaralho);
             int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " linhas apagadas");
+
+            query = "DELETE  FROM Baralhos WHERE NomeBaralho = ?";
+            stmt = conn.prepareStatement(query);
+            stmt.setString(1,nomeDoBaralho);
+            rowsAffected = stmt.executeUpdate();
 
             System.out.println(rowsAffected + " linhas apagadas");
 
@@ -69,6 +76,63 @@ public class Dados {
             System.out.println("General Error: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public static void criaBaralho(String nomeDoBaralho){
+        String url = "jdbc:mysql://localhost:3306/projetolicenciatura";
+        String user = "root";
+        String password = "SimpsonsTheMovie2012";
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "INSERT INTO Baralhos(NomeBaralho) VALUES(?)";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1,nomeDoBaralho);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " baralhos criados");
+
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println(nomeDoBaralho);
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean baralhoInexistente(String nomeDoBaralho){
+        String url = "jdbc:mysql://localhost:3306/projetolicenciatura";
+        String user = "root";
+        String password = "SimpsonsTheMovie2012";
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT NomeBaralho  FROM Baralhos WHERE NomeBaralho = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1,nomeDoBaralho);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()){
+                return false;
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return true;
     }
 
 }

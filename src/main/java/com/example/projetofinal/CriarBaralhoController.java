@@ -41,12 +41,25 @@ public class CriarBaralhoController {
     }
 
     @FXML
-    protected void aoClicarCriar(){
+    protected void aoClicarCriar(){///Ao tentar criar um baralho com um nome que já exista só temos que devolver isso mesmo, que esse baralho já existe
         if(!nome.getText().equals("")){
             Alert confirma = new Alert(Alert.AlertType.CONFIRMATION,"Quer criar o baralho " + nome.getText() + "?", ButtonType.YES,ButtonType.NO);
             confirma.showAndWait();
             if(confirma.getResult() == ButtonType.YES){
                 //Cria-se e adiciona-se á lista e à base de dados.
+                if(Dados.baralhoInexistente(nome.getText())){
+                    //Ações caso o baralho não exista , criar o baralho
+                    Dados.criaBaralho(nome.getText());
+                    Alert jaCriado = new Alert(Alert.AlertType.INFORMATION,"O baralho foi criado.");
+                    jaCriado.showAndWait();
+
+
+                }
+                else {
+                    //Ações caso o baralho exista aviso a dizer que o baralho existe
+                    Alert jaExiste = new Alert(Alert.AlertType.INFORMATION,"O baralho já existe.");
+                    jaExiste.showAndWait();
+                }
             }
         }
     }
