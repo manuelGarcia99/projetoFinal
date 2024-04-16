@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projetofinal.ApagarBaralhoController">
+   <children>
+      <Button fx:id="regressa" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#aoClicarRegresso" text="Retornar" />
+      <VBox layoutX="93.0" layoutY="71.0" prefHeight="258.0" prefWidth="414.0">
+         <children>
+            <TableView fx:id="tabela" prefHeight="279.0" prefWidth="413.0">
+              <columns>
+                <TableColumn fx:id="colunaNome" prefWidth="204.7999725341797" text="Nome" />
+                <TableColumn fx:id="colunaCartas" prefWidth="208.0" text="Cartas" />
+              </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
