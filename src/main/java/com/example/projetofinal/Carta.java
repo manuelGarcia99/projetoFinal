@@ -3,7 +3,7 @@ package com.example.projetofinal;
 public  class Carta {
     private double easinessFactor;
     private int id;
-    private int intervalo;
+    private int intervaloAnterior;
     private int ordemDaRepeticao;
     private String pergunta;
     private String resposta;
@@ -12,13 +12,14 @@ public  class Carta {
     private String termo2;
     private String definicao2;
     private String nomeDoBaralho;
+    private int intervaloAtual;
 
     Carta(int id, String pergunta, String resposta, String termo1, String definicao1, String termo2, String definicao2, String nomeDoBaralho)
     {
         this.easinessFactor = 2.5;
         this.ordemDaRepeticao = 1;
         this.id = id;//Vamos ter que trabalhar com a base de dados
-        this.intervalo = 1;
+        this.intervaloAtual = 1;
         this.pergunta = pergunta;
         this.resposta = resposta;
         this.termo1 = termo1;
@@ -45,11 +46,11 @@ public  class Carta {
     }
 
     public int getIntervalo() {
-        return intervalo;
+        return intervaloAtual;
     }
 
     public void setIntervalo(int intervalo) {
-        this.intervalo = intervalo;
+        this.intervaloAtual = intervalo;
     }
 
     public int getOrdemDaRepeticao() {

@@ -42,7 +42,7 @@ public class Dados {
         return lista;
     }
 
-    public static void apagaBaralho(String nomeDoBaralho){
+    public static void apagaBaralho(String nomeDoBaralho) {
         String url = "jdbc:mysql://localhost:3306/projetolicenciatura";
         String user = "root";
         String password = "SimpsonsTheMovie2012";
@@ -52,14 +52,14 @@ public class Dados {
 
             String query = "DELETE  FROM Cartas WHERE NomeBaralho = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1,nomeDoBaralho);
+            stmt.setString(1, nomeDoBaralho);
             int rowsAffected = stmt.executeUpdate();
 
             System.out.println(rowsAffected + " linhas apagadas");
 
             query = "DELETE  FROM Baralhos WHERE NomeBaralho = ?";
             stmt = conn.prepareStatement(query);
-            stmt.setString(1,nomeDoBaralho);
+            stmt.setString(1, nomeDoBaralho);
             rowsAffected = stmt.executeUpdate();
 
             System.out.println(rowsAffected + " linhas apagadas");
@@ -78,7 +78,7 @@ public class Dados {
         }
     }
 
-    public static void criaBaralho(String nomeDoBaralho){
+    public static void criaBaralho(String nomeDoBaralho) {
         String url = "jdbc:mysql://localhost:3306/projetolicenciatura";
         String user = "root";
         String password = "SimpsonsTheMovie2012";
@@ -87,7 +87,7 @@ public class Dados {
 
             String query = "INSERT INTO Baralhos(NomeBaralho) VALUES(?)";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1,nomeDoBaralho);
+            stmt.setString(1, nomeDoBaralho);
             int rowsAffected = stmt.executeUpdate();
 
             System.out.println(rowsAffected + " baralhos criados");
@@ -104,7 +104,7 @@ public class Dados {
         }
     }
 
-    public static boolean baralhoInexistente(String nomeDoBaralho){
+    public static boolean baralhoInexistente(String nomeDoBaralho) {
         String url = "jdbc:mysql://localhost:3306/projetolicenciatura";
         String user = "root";
         String password = "SimpsonsTheMovie2012";
@@ -114,11 +114,11 @@ public class Dados {
             String query = "SELECT NomeBaralho  FROM Baralhos WHERE NomeBaralho = ?";
 
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1,nomeDoBaralho);
+            stmt.setString(1, nomeDoBaralho);
 
             ResultSet rs = stmt.executeQuery();
 
-            if(rs.next()){
+            if (rs.next()) {
                 return false;
             }
 
@@ -135,4 +135,35 @@ public class Dados {
         return true;
     }
 
+    public static int idMaisBaixoDoBaralho(String nomeDoBaralho) {
+        String url = "jdbc:mysql://localhost:3306/projetolicenciatura";
+        String user = "root";
+        String password = "SimpsonsTheMovie2012";
+        int idMaisBaixo = -1;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT MIN(ID)  FROM cartas WHERE NomeBaralho = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, nomeDoBaralho);
+
+            ResultSet rs = stmt.executeQuery();
+
+
+            idMaisBaixo = rs.getInt(0);
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return idMaisBaixo;
+    }
 }

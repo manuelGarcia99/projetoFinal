@@ -113,7 +113,7 @@ public class StudyMasterMainMenuController {
             throw new RuntimeException(e);
         }
         Stage stage = new Stage();
-        stage.setTitle("Revisão do Baralho");
+        stage.setTitle("Edição do Baralho");
         stage.setScene(scene);
 
         stage.show();

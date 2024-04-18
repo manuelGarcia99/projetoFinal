@@ -35,6 +35,8 @@ public class CriarBaralhoController {
 
         stage.show();
 
+
+
         Stage oldStage = (Stage) regressa.getScene().getWindow();
         oldStage.close();
         oldStage = null;
