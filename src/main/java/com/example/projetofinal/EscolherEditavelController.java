@@ -27,7 +27,7 @@ public class EscolherEditavelController implements Initializable
     TableColumn<Baralho,Integer> colunaCartas;
     @FXML
     protected void aoClicarRegressa(){
-        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenuController.class.getResource("main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("main.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 700, 600);
@@ -64,9 +64,12 @@ public class EscolherEditavelController implements Initializable
                     Alert confirmacao = new Alert(Alert.AlertType.CONFIRMATION,"Deseja realmente editar "+ aEditar.getNome() + "?", ButtonType.YES,ButtonType.NO,ButtonType.CANCEL);
                     confirmacao.showAndWait();
                     if(confirmacao.getResult() == ButtonType.YES){
-                        System.out.println("Implementar edição.");
+                        if(Dados.idMaisBaixoDoBaralho(aEditar.getNome()) == 0){
+                            Alert vazio = new Alert(Alert.AlertType.INFORMATION,"Esse baralho está vazio");
+                            vazio.showAndWait();
+                        }
 
-                        FXMLLoader fxmlLoader = new FXMLLoader(ApagarBaralhoController.class.getResource("main.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("editorDeCartas.fxml"));
                         Scene scene = null;
                         try {
                             scene = new Scene(fxmlLoader.load(), 700, 600);
@@ -82,14 +85,13 @@ public class EscolherEditavelController implements Initializable
                         EditorFrontEndController controllerJanelaEditor = fxmlLoader.getController();
 
                         controllerJanelaEditor.getNomeBaralho(aEditar.getNome());
-
                         Stage oldStage = (Stage) regressa.getScene().getWindow();
                         oldStage.close();
+
+
                         oldStage = null;
 
                     }
-
-
                 }
             });
             return linha;

@@ -22,7 +22,7 @@ public class CriarBaralhoController {
 
     @FXML
     protected void aoClicarRegresso(){
-        FXMLLoader fxmlLoader = new FXMLLoader(CriarBaralhoController.class.getResource("main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("main.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 700, 600);

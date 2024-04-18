@@ -29,7 +29,7 @@ public class OpcoesController implements Initializable {
 
     @FXML
     protected void aoClicarRegresso(){
-        FXMLLoader fxmlLoader = new FXMLLoader(OpcoesController.class.getResource("main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("main.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 700, 600);

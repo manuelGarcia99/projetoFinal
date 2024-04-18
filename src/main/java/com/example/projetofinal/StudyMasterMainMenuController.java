@@ -25,7 +25,7 @@ public class StudyMasterMainMenuController {
 
     @FXML
     protected void aoClicarBotaoDefinicoes() {
-        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenuController.class.getResource("opcoes.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("opcoes.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 600, 600);
@@ -45,7 +45,7 @@ public class StudyMasterMainMenuController {
 
     @FXML
     protected void aoClicarBotaoCriar(){
-        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenuController.class.getResource("criarBaralho.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("criarBaralho.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 600, 600);
@@ -65,7 +65,7 @@ public class StudyMasterMainMenuController {
 
     @FXML
     protected void aoClicarBotaoApagar(){
-        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenuController.class.getResource("apagarBaralho.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("apagarBaralho.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 600, 600);
@@ -85,7 +85,7 @@ public class StudyMasterMainMenuController {
 
     @FXML
     protected void aoClicarBotaoRever(){
-        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenuController.class.getResource("reverBaralho.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("reverBaralho.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 600, 600);
@@ -105,7 +105,7 @@ public class StudyMasterMainMenuController {
 
     @FXML
     protected void aoClicarBotaoEditar(){
-        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenuController.class.getResource("editarBaralho.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("editarBaralho.fxml"));
         Scene scene = null;
         try {
             scene = new Scene(fxmlLoader.load(), 600, 600);
