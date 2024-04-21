@@ -1,8 +1,27 @@
 package com.example.projetofinal;
 
+import java.util.Date;
+
 public  class Carta {
     private double easinessFactor;
     private int id;
+
+    public int getIntervaloAnterior() {
+        return intervaloAnterior;
+    }
+
+    public void setIntervaloAnterior(int intervaloAnterior) {
+        this.intervaloAnterior = intervaloAnterior;
+    }
+
+    public int getIntervaloAtual() {
+        return intervaloAtual;
+    }
+
+    public void setIntervaloAtual(int intervaloAtual) {
+        this.intervaloAtual = intervaloAtual;
+    }
+
     private int intervaloAnterior;
     private int ordemDaRepeticao;
     private String pergunta;
@@ -13,12 +32,12 @@ public  class Carta {
     private String definicao2;
     private String nomeDoBaralho;
     private int intervaloAtual;
+    private Date dataUltimoUso;
 
-    Carta(int id, String pergunta, String resposta, String termo1, String definicao1, String termo2, String definicao2, String nomeDoBaralho)
+    Carta( String pergunta, String resposta, String termo1, String definicao1, String termo2, String definicao2, String nomeDoBaralho)
     {
         this.easinessFactor = 2.5;
-        this.ordemDaRepeticao = 1;
-        this.id = id;//Vamos ter que trabalhar com a base de dados
+        //this.id = id;//Vamos ter que trabalhar com a base de dados
         this.intervaloAtual = 1;
         this.pergunta = pergunta;
         this.resposta = resposta;

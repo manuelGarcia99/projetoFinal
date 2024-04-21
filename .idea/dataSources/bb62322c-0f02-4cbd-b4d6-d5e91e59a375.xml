@@ -1014,7 +1014,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     </schema>
     <schema id="292" parent="1" name="projetolicenciatura">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2024-04-16.16:49:11</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-04-20.10:41:46</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="293" parent="1" name="projeto">
@@ -24144,7 +24144,7 @@ VARIABLE_NAME</ColNames>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="4626" parent="676" name="ID">
-      <AutoIncrement>6</AutoIncrement>
+      <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -24190,12 +24190,25 @@ VARIABLE_NAME</ColNames>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <index id="4636" parent="676" name="PRIMARY">
+    <column id="4636" parent="676" name="Intervalo">
+      <DasType>int|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>11</Position>
+    </column>
+    <column id="4637" parent="676" name="PrimeiroTermo">
+      <DasType>varchar(30)|0s</DasType>
+      <Position>12</Position>
+    </column>
+    <column id="4638" parent="676" name="SegundoTermo">
+      <DasType>varchar(30)|0s</DasType>
+      <Position>13</Position>
+    </column>
+    <index id="4639" parent="676" name="PRIMARY">
       <ColNames>ID</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="4637" parent="676" name="PRIMARY">
+    <key id="4640" parent="676" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

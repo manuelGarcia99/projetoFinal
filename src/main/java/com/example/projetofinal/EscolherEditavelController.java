@@ -77,7 +77,7 @@ public class EscolherEditavelController implements Initializable
                             throw new RuntimeException(e);
                         }
                         Stage stage = new Stage();
-                        stage.setTitle("Study Master!");
+                        stage.setTitle("Editor de cartas!");
                         stage.setScene(scene);
 
                         stage.show();
@@ -85,6 +85,9 @@ public class EscolherEditavelController implements Initializable
                         EditorFrontEndController controllerJanelaEditor = fxmlLoader.getController();
 
                         controllerJanelaEditor.getNomeBaralho(aEditar.getNome());
+                        controllerJanelaEditor.getID(Dados.idMaisBaixoDoBaralho(aEditar.getNome()));
+                        controllerJanelaEditor.refresh();
+
                         Stage oldStage = (Stage) regressa.getScene().getWindow();
                         oldStage.close();
 

@@ -3,7 +3,7 @@ CREATE TABLE Cartas(
     Pergunta VARCHAR(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     Resposta VARCHAR(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
     IntervaloAnterior INT NULL,
-    OrdemDaRepeticao INT NOT NULL,
+    OrdemDaRepeticao INT  NULL,
     EF DECIMAL NOT NULL,
     DataUltimoUso DATETIME NULL,
     Def1 VARCHAR(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL,
