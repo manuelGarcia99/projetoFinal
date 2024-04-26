@@ -2,15 +2,12 @@ package com.example.projetofinal;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class AdicionarCartaController
 {
@@ -64,18 +61,64 @@ public class AdicionarCartaController
 
     @FXML
     protected void aoClicarDefinicao1(){
-        ///Ao clicar Definição 1
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("adicionarDefinicao1.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 700, 600);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Definição 1");
+        stage.setScene(scene);
+        stage.show();
+
+        AdicionadorDefinicao1Controller controllerEditor = fxmlLoader.getController();
+
+        controllerEditor.getIdCarta(idUltimaCarta);
+        controllerEditor.getNomeBaralho(nomeDoBaralho);
+        controllerEditor.getDefinicao1(definicao1,termo1);
+        controllerEditor.getDefinicao2(definicao2,termo2);
+
+        Stage oldStage = (Stage) regressa.getScene().getWindow();
+        oldStage.close();
+        oldStage = null;
+
     }
 
     @FXML
     protected void aoClicarDefinicao2(){
-        ///Ao clicar Definição 2
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("adicionarDefinicao2.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 700, 600);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Definição 2");
+        stage.setScene(scene);
+        stage.show();
+
+        AdicionadorDefinicao2Controller controllerEditor = fxmlLoader.getController();
+
+        controllerEditor.getIdCarta(idUltimaCarta);
+        controllerEditor.getNomeBaralho(nomeDoBaralho);
+        controllerEditor.getDefinicao2(definicao2,termo2);
+        controllerEditor.getDefinicao1(definicao1,termo1);
+
+        Stage oldStage = (Stage) regressa.getScene().getWindow();
+        oldStage.close();
+        oldStage = null;
     }
 
     @FXML
     protected void aoClicarConcluir(){
         ///Ao clicar concluido começa-se por este
         Carta carta = new Carta(textoPergunta.getText(),textoResposta.getText(),termo1,definicao1,termo2,definicao2,nomeDoBaralho);
+        System.out.println(termo1 + "- " + definicao1);
+        System.out.println(termo2 + "- " + definicao2);
+
         Dados.criaCarta(carta);
         textoPergunta.setText("");
         textoResposta.setText("");
@@ -95,10 +138,7 @@ public class AdicionarCartaController
         stage.setScene(scene);
 
         stage.show();
-        ///Agora tenho que fazer umas coisas V
-        ///tenho que voltar mas com o UltimoId e com o NomeDoBaralho V
-        ///tenho também que dar refresh aos componentes V
-        ///Ultima alteração 18-04-24 15:18
+
         EditorFrontEndController controllerEditor = fxmlLoader.getController();
 
         controllerEditor.getNomeBaralho(nomeDoBaralho);

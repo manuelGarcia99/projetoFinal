@@ -49,11 +49,7 @@ public class ReverBaralhoController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ObservableList<Baralho> lista = FXCollections.observableArrayList(
-                new Baralho("Baralho 1", 3),
-                new Baralho("Baralho 2",3),
-                new Baralho("Baralho 3",3)
-        );
+        ObservableList<Baralho> lista = Dados.encheALista();
         colunaNome.setCellValueFactory(new PropertyValueFactory<Baralho, String>("nome"));
         colunaCartas.setCellValueFactory(new PropertyValueFactory<Baralho,Integer>("numeroDeCartas"));
         tabela.setItems(lista);
@@ -69,6 +65,26 @@ public class ReverBaralhoController implements Initializable
                     confirmacao.showAndWait();
                     if(confirmacao.getResult() == ButtonType.YES){
                         //Começar o RevisorFE e só passamos o valor do nome do baralho
+                        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("revisorFrontEnd.fxml"));
+                        Scene scene = null;
+                        try {
+                            scene = new Scene(fxmlLoader.load(), 900, 600);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        Stage stage = new Stage();
+                        stage.setTitle("Revisor!");
+                        stage.setScene(scene);
+
+
+                        stage.show();
+                        RevisorFrontEndController controller = fxmlLoader.getController();
+                        controller.GetNomeDoBaralho(aRever.getNome());
+                        controller.refresh();
+
+                        Stage oldStage = (Stage) regressa.getScene().getWindow();
+                        oldStage.close();
+                        oldStage = null;
                     }
 
 

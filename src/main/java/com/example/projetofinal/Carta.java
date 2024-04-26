@@ -46,6 +46,7 @@ public  class Carta {
         this.termo2 = termo2;
         this.definicao2 = definicao2;
         this.nomeDoBaralho = nomeDoBaralho;
+        this.ordemDaRepeticao = 1;
     }
 
     public double getEasinessFactor() {

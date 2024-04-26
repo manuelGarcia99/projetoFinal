@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class RevisorFrontEndController implements Initializable {
+public class RevisorFrontEndController {
     private String nomeDoBaralho;///Quando acabarmos o BackEnd Temos que escolher isto
     @FXML
     private TextArea pergunta;
@@ -43,12 +43,13 @@ public class RevisorFrontEndController implements Initializable {
     @FXML
     private MenuItem opcao5;
 
-    private int ultimoId;////Esta variável deve ser apagada quando concluido o Backend
+    private int ID;////Esta variável deve ser apagada quando concluido o Backend
 
 
     private ArrayList<Carta> cartas;
     ///para apagar a ArrayList de baixo quando concluirmos o Backend
     private ArrayList<CartaTeste> cartasDeTeste;
+    private int qualidade;
     public void GetNomeDoBaralho(String nomeDoBaralho)
     {
         this.nomeDoBaralho = nomeDoBaralho;
@@ -57,9 +58,10 @@ public class RevisorFrontEndController implements Initializable {
 
     @FXML
     protected void aoClicarMostra(){///vamos começar com 3 cartas depois vamos ter base de dados e uma classe de Bacckend
+
         mostraOVerso.setVisible(false);
         mostraOVerso.setMouseTransparent(true);
-        pergunta.setVisible(true);
+        resposta.setVisible(true);
         entendimento.setVisible(true);
         mostraD1.setVisible(true);
         mostraD2.setVisible(true);
@@ -70,26 +72,25 @@ public class RevisorFrontEndController implements Initializable {
         mostraD1.setMouseTransparent(false);
         mostraD2.setMouseTransparent(false);
         proxima.setMouseTransparent(false);
+        pergunta.setMouseTransparent(true);
+
+        resposta.setText(Dados.encheAreaDoTextoDeResposta(ID));
+        definicao1.setText(Dados.encontraTermo1(ID));
+        definicao2.setText(Dados.encontraTermo2(ID));
     }
 
     @FXML
     protected void aoClicarMostraD1()
     {
-        for(CartaTeste cartinha : cartasDeTeste) {
-            if(cartinha.getId() ==ultimoId) {
-                Alert box = new Alert(Alert.AlertType.INFORMATION,cartinha.getDefinicao1(),ButtonType.OK);
-            }
-        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,Dados.encontraDefinicao1(ID));
+        alert.showAndWait();
 
     }
     @FXML
     protected void aoClicarMostraD2()
     {
-        for(CartaTeste cartinha : cartasDeTeste) {
-            if(cartinha.getId() ==ultimoId) {
-                Alert box = new Alert(Alert.AlertType.INFORMATION,cartinha.getDefinicao2(),ButtonType.OK);
-            }
-        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION,Dados.encontraDefinicao2(ID));
+        alert.showAndWait();
 
     }
     @FXML
@@ -97,6 +98,7 @@ public class RevisorFrontEndController implements Initializable {
     {
         escolhido.setText("0");
         escolhido.setVisible(true);
+        resposta.setVisible(false);
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -105,6 +107,8 @@ public class RevisorFrontEndController implements Initializable {
     {
         escolhido.setText("1");
         escolhido.setVisible(true);
+        resposta.setVisible(false);
+
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -113,6 +117,7 @@ public class RevisorFrontEndController implements Initializable {
     {
         escolhido.setText("2");
         escolhido.setVisible(true);
+        resposta.setVisible(false);
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -121,6 +126,7 @@ public class RevisorFrontEndController implements Initializable {
     {
         escolhido.setText("3");
         escolhido.setVisible(true);
+        resposta.setVisible(false);
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -129,6 +135,7 @@ public class RevisorFrontEndController implements Initializable {
     {
         escolhido.setText("4");
         escolhido.setVisible(true);
+        resposta.setVisible(false);
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -137,23 +144,15 @@ public class RevisorFrontEndController implements Initializable {
     {
         escolhido.setText("5");
         escolhido.setVisible(true);
+        resposta.setVisible(false);
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {//aqui vamos chamar a função mostra
-        ///Sem backend primeiro
-        ///No backend povoamos a arrayListCartas com as cartas do dia
-        ///No backend escolhemos aleatoriamente as cartas
-        ///No backend alteramos o valor das cartas a cada iteração
-        ///O resto é no FrontEnd
-        CartaTeste carta1 = new CartaTeste(1,"Quantos faraós teve o Egipto?","Reinaram 170 faraós em menos de 30 dinastias","Faraó","Faraó é o título que se refere ao monarca governante do Egito Antigo.","Dinastia","Dinastia é o período de sucessão, que reis e rainhas, pertencentes a uma mesma família, permanecem no poder.","Baralho 1");
-        CartaTeste carta2 = new CartaTeste(2,"Quem foi Leonardo Da Vinci?","Leonardo di Ser Piero da Vinci, ou simplesmente Leonardo da Vinci, foi um polímata nascido na atual Itália, uma das figuras mais importantes do Alto Renascimento, que se destacou como cientista, matemático, engenheiro, inventor, anatomista, pintor, escultor, arquiteto, botânico, poeta e músico.","Polímata","Polímata vem do grego polymathēs, que significa “aquele que aprendeu muito”. Atualmente, o termo é usado para designar pessoas que estudaram e aprenderam muito em várias áreas do conhecimento humano.","Alto Renascimento","A Alta Renascença, Alto Renascimento ou Alto Renascentismo representa, na história da arte, o ponto culminante da arte da Renascença italiana entre 1450 e 1527.","Baralho 1");
-        CartaTeste carta3 = new CartaTeste(3,"Quem construiu Versalhes?","Considera-se que a construção do Palácio de Versalhes iniciou-se por ordem do rei Luís XIV, o mais poderoso rei francês do período absolutista.","Baralho 1");
-        cartasDeTeste.add(carta1);
-        cartasDeTeste.add(carta2);
-        cartasDeTeste.add(carta3);
-        ultimoId = 1;
+    public void refresh()
+    {
+
+
+
         resposta.setVisible(false);
         mostraD1.setVisible(false);
         mostraD2.setVisible(false);
@@ -166,12 +165,9 @@ public class RevisorFrontEndController implements Initializable {
         mostraD2.setMouseTransparent(true);
         proxima.setMouseTransparent(true);
         entendimento.setMouseTransparent(true);
-        for(CartaTeste cartinha : cartasDeTeste) {
-            if(cartinha.getId() ==ultimoId) {
-                pergunta.setText(cartinha.getPergunta());
-                definicao1.setText(cartinha.getTermo1());
-                definicao2.setText(cartinha.getTermo2());
-            }
-        }
+        ID = Dados.idMaisBaixoDoBaralho(nomeDoBaralho);///para alterar mais tarde
+        pergunta.setText(Dados.encheAreaDoTextoDePergunta(ID));
     }
+
+
 }

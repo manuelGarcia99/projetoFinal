@@ -8,21 +8,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projetofinal.AdicionadorDefinicao1Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projetofinal.EditorDefinicao1Controller">
    <children>
-      <VBox layoutX="79.0" layoutY="6.0" prefHeight="392.0" prefWidth="421.0">
+      <VBox layoutX="87.0" layoutY="4.0" prefHeight="394.0" prefWidth="417.0">
          <children>
             <Label text="Termo">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
                <VBox.margin>
-                  <Insets top="35.0" />
+                  <Insets top="30.0" />
                </VBox.margin>
             </Label>
-            <TextField fx:id="textoTermo" prefHeight="26.0" prefWidth="364.0" />
+            <TextField fx:id="termoTexto" />
             <Label text="Definição" />
-            <TextArea fx:id="textoDefinicao" prefHeight="288.0" prefWidth="422.0" />
+            <TextArea fx:id="definicaoTexto" prefHeight="302.0" prefWidth="418.0" />
          </children>
       </VBox>
       <Button fx:id="regressa" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#aoClicarRegressa" text="Retornar" />

@@ -86,6 +86,8 @@ public class Dados {
 
             System.out.println(rowsAffected + " baralhos criados");
 
+            conn.close();
+            stmt.close();
 
         } catch (SQLException e) {
             System.out.println("Cheguei aqui");
@@ -165,7 +167,7 @@ public class Dados {
             String query = "SELECT Pergunta  FROM cartas WHERE ID = ?";
 
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, Integer.toString(idCarta));
+            stmt.setInt(1, idCarta);
 
             ResultSet rs = stmt.executeQuery();
 
@@ -195,11 +197,12 @@ public class Dados {
             String query = "SELECT Resposta  FROM cartas WHERE ID = ?";
 
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, Integer.toString(idCarta));
+            stmt.setInt(1, idCarta);
 
             ResultSet rs = stmt.executeQuery();
 
             rs.next();
+            texto = rs.getString(1);
 
             rs.close();
             stmt.close();
@@ -221,17 +224,18 @@ public class Dados {
             Connection conn = DriverManager.getConnection(url, user, password);
 
 
-            String query = "INSERT INTO cartas( NomeBaralho,Pergunta, Resposta,   EF,  Def1, Def2,  Intervalo, PrimeiroTermo, SegundoTermo) VALUES(?,?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO cartas( NomeBaralho,Pergunta, Resposta,   EF,  Def1, Def2,  Intervalo, PrimeiroTermo, SegundoTermo, OrdemDaRepeticao) VALUES(?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, carta.getNomeDoBaralho());
             stmt.setString(2, carta.getPergunta());
             stmt.setString(3, carta.getResposta());
-            stmt.setString(4, Double.toString(carta.getEasinessFactor()));
+            stmt.setDouble(4, carta.getEasinessFactor());
             stmt.setString(5, carta.getDefinicao1());
             stmt.setString(6, carta.getDefinicao2());
-            stmt.setString(7, Integer.toString(carta.getIntervalo()));
+            stmt.setInt(7, carta.getIntervalo());
             stmt.setString(8, carta.getTermo1());
             stmt.setString(9, carta.getTermo2());
+            stmt.setInt(10,carta.getOrdemDaRepeticao());
             int rowsAffected = stmt.executeUpdate();
 
             System.out.println(rowsAffected + " cartas criadas");
@@ -246,5 +250,404 @@ public class Dados {
             System.out.println("General Error: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public static int encontraIdProximaCarta(int ID , String nomeBaralho)
+    {
+        int valor = -1;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT MIN(ID) AS next  FROM cartas WHERE ID > ? AND NomeBaralho = ? ";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+            stmt.setString(2, nomeBaralho);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            valor = rs.getInt(1);
+            if(valor == 0){
+                valor = Dados.idMaisBaixoDoBaralho(nomeBaralho);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return valor;
+    }
+
+    public static int idMaisAltoDoBaralho(String nomeDoBaralho)
+    {
+        int idMaisAlto = 0;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT MAX(ID)  FROM cartas WHERE NomeBaralho = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, nomeDoBaralho);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            idMaisAlto = rs.getInt(1);
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return idMaisAlto;
+    }
+
+    public static int encontraIdCartaAnterior(int ID, String nomeBaralho)
+    {
+        int valor = -1;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT MAX(ID) AS preceeding FROM cartas WHERE ID < ? AND NomeBaralho = ? ";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+            stmt.setString(2, nomeBaralho);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            valor = rs.getInt(1);
+            if(valor == 0){
+                valor = Dados.idMaisAltoDoBaralho(nomeBaralho);
+            }
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return valor;
+    }
+
+    public static void removerCarta(int ID)
+    {
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+
+            String query = "DELETE FROM cartas WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas apagadas");
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void alteraPergunta(String novaPergunta, int ID)
+    {
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET Pergunta = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, novaPergunta);
+            stmt.setInt(2,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void alteraResposta(String novaResposta, int ID)
+    {
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET Resposta = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, novaResposta);
+            stmt.setInt(2,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void novaDefinicao1(String novoTermo1 ,String novaDefinicao1, int ID)
+    {
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET PrimeiroTermo = ? , Def1 = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, novoTermo1);
+            stmt.setString(2,novaDefinicao1);
+            stmt.setInt(3,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void novaDefinicao2(String novoTermo2, String novaDefinicao2, int ID)
+    {
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET SegundoTermo = ?, Def2 = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, novoTermo2);
+            stmt.setString(2,novaDefinicao2);
+            stmt.setInt(3,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static String encontraTermo1(int ID)
+    {
+        String texto = "Texto Inicial";
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT PrimeiroTermo  FROM cartas WHERE ID = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            texto = rs.getString(1);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return texto;
+    }
+
+    public static String encontraTermo2(int ID)
+    {
+        String texto = "Texto Inicial";
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT SegundoTermo  FROM cartas WHERE ID = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            texto = rs.getString(1);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return texto;
+    }
+
+    public static String encontraDefinicao1(int ID)
+    {
+        String texto = "Texto Inicial";
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT Def1  FROM cartas WHERE ID = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            texto = rs.getString(1);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return texto;
+    }
+
+    public static String encontraDefinicao2(int ID)
+    {
+        String texto = "Texto Inicial";
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT Def2  FROM cartas WHERE ID = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            texto = rs.getString(1);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return texto;
+    }
+
+    public static int encontraOrdemDeRepeticao(int ID)
+    {
+        int ordem = -1;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT OrdemDaRepeticao  FROM cartas WHERE ID = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            ordem = rs.getInt(1);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return ordem;
+    }
+
+    public static int encontraEF(int ID)
+    {
+        
+    }
+
+    public static void algoritmoQueReve(int ID, int qualidadeDaResposta)
+    {
+
+
     }
 }

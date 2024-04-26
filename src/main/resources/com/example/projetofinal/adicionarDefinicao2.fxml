@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projetofinal.AdicionadorDefinicao2Controller">
    <children>
       <VBox layoutX="79.0" layoutY="6.0" prefHeight="392.0" prefWidth="421.0">
          <children>
@@ -26,7 +25,7 @@
             <TextArea fx:id="textoDefinicao" prefHeight="288.0" prefWidth="422.0" />
          </children>
       </VBox>
-      <Button fx:id="regressa" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Retornar" />
-      <Button fx:id="concluir" layoutX="516.0" layoutY="360.0" mnemonicParsing="false" text="Concluído" />
+      <Button fx:id="regressa" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#aoClicarRegressa" text="Retornar" />
+      <Button fx:id="concluir" layoutX="516.0" layoutY="360.0" mnemonicParsing="false" onAction="#aoClicarConcluir" text="Concluído" />
    </children>
 </AnchorPane>

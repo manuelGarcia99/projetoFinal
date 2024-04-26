@@ -6,22 +6,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EditorDefinicao2Controller{
+public class EditorPerguntaController  {
     @FXML
     private Button regressa;
     @FXML
     private Button concluir;
     @FXML
-    private TextField termoTexto;
-    @FXML
-    private TextArea definicaoTexto;
+    private TextArea pergunta;
 
 
     private int ID;
@@ -63,10 +60,11 @@ public class EditorDefinicao2Controller{
         oldStage.close();
         oldStage = null;
     }
+
     @FXML
-    private void aoClicarConcluir()
+    private void aoClicarImplementar()
     {
-        Dados.novaDefinicao2(termoTexto.getText(),definicaoTexto.getText(),ID);
+        Dados.alteraPergunta(pergunta.getText(), ID);
         FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("editorDeCartas.fxml"));
         Scene scene = null;
         try {
@@ -94,9 +92,6 @@ public class EditorDefinicao2Controller{
 
     public void refresh()
     {
-        termoTexto.setText(Dados.encontraTermo2(ID));
-        definicaoTexto.setText(Dados.encontraDefinicao2(ID));
+       pergunta.setText(Dados.encheAreaDoTextoDePergunta(ID));
     }
-
-
 }
