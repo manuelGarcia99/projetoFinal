@@ -52,7 +52,7 @@ public class Dados {
             Statement stmt = conn.createStatement();
 
             String query = "SELECT DISTINCT B.NomeBaralho, (SELECT " +
-                    " COUNT(*) FROM Cartas C WHERE ((DATEDIFF(CURDATE(),DataUltimoUso) > C.Intervalo)" +
+                    " COUNT(*) FROM Cartas C WHERE ((DATEDIFF(CURDATE(),DataUltimoUso) >= C.Intervalo)" +
                     " OR Intervalo IS NULL  )" +
                     " AND C.NomeBaralho = B.NomeBaralho ) AS Cartas FROM Baralhos B";
 
@@ -947,14 +947,46 @@ public class Dados {
 
     }
 
-    public static int encontraIDMaisBaixoDoBaralhoDasRevisiveis(String nomeDoBaralho)
+    public static int encontraIDAleatorioDosRevisiveis(String nomeDoBaralho){///Por Testar
+        int id = 0;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT ID  FROM cartas WHERE (NomeBaralho = ?)"+
+                    "AND ((DATEDIFF(CURDATE(),DataUltimoUso) >= Intervalo)OR Intervalo IS NULL  )"+
+                    "ORDER BY RAND()"+
+                    "LIMIT 1";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, nomeDoBaralho);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            id = rs.getInt(1);
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return id;
+    }
+
+   /* public static int encontraIDMaisBaixoDoBaralhoDasRevisiveis(String nomeDoBaralho)///Vai cair em desuso
     {
         int idMaisBaixo = 0;
         try {
             Connection conn = DriverManager.getConnection(url, user, password);
 
             String query = "SELECT MIN(ID)  FROM cartas WHERE (NomeBaralho = ?)"+
-                    "AND ((DATEDIFF(CURDATE(),DataUltimoUso) > Intervalo)OR Intervalo IS NULL  )";
+                    "AND ((DATEDIFF(CURDATE(),DataUltimoUso) >= Intervalo)OR Intervalo IS NULL  )";
 
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, nomeDoBaralho);
@@ -976,5 +1008,5 @@ public class Dados {
             e.printStackTrace();
         }
         return idMaisBaixo;
-    }
+    }*/
 }

@@ -1,14 +1,20 @@
 package com.example.projetofinal;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class RevisorFrontEndController {
+
+    ////Temos que adicionar um retornar
     private String nomeDoBaralho;///Quando acabarmos o BackEnd Temos que escolher isto
     @FXML
     private TextArea pergunta;
@@ -42,6 +48,9 @@ public class RevisorFrontEndController {
     private MenuItem opcao4;
     @FXML
     private MenuItem opcao5;
+    @FXML
+    private Button regressa;
+
 
     private int ID;////Esta variável deve ser apagada quando concluido o Backend
 
@@ -72,10 +81,30 @@ public class RevisorFrontEndController {
         mostraD2.setMouseTransparent(true);
         proxima.setMouseTransparent(true);
         entendimento.setMouseTransparent(true);
-        ID = Dados.encontraIDMaisBaixoDoBaralhoDasRevisiveis(nomeDoBaralho);///para alterar mais tarde
+        ID = Dados.encontraIDAleatorioDosRevisiveis(nomeDoBaralho);///para alterar mais tarde
         pergunta.setText(Dados.encheAreaDoTextoDePergunta(ID));
     }
 
+
+    @FXML
+    protected void aoClicarRegressa(){
+        FXMLLoader fxmlLoader = new FXMLLoader(StudyMasterMainMenu.class.getResource("reverBaralho.fxml"));
+        Scene scene = null;
+        try {
+            scene = new Scene(fxmlLoader.load(), 600, 600);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Stage stage = new Stage();
+        stage.setTitle("Revisão do Baralho");
+        stage.setScene(scene);
+
+        stage.show();
+
+        Stage oldStage = (Stage) regressa.getScene().getWindow();
+        oldStage.close();
+        oldStage = null;
+    }
 
     @FXML
     protected void aoClicarMostra(){///vamos começar com 3 cartas depois vamos ter base de dados e uma classe de Bacckend

@@ -33,20 +33,20 @@
                </GridPane.margin>
             </Label>
             <Button fx:id="regressa" mnemonicParsing="false" onAction="#aoClicarRegresso" text="Retornar" />
-            <TextArea fx:id="pergunta" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+            <TextArea fx:id="pergunta" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
             <Button fx:id="novaCarta" mnemonicParsing="false" onAction="#aoClicarNovaCarta" text="Adicionar Nova Carta" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-            <Button fx:id="removerBotao" mnemonicParsing="false" text="Remover Carta" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <Button fx:id="removerBotao" mnemonicParsing="false" onAction="#aoClicarRemoverCarta" text="Remover Carta" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="10.0" />
                </GridPane.margin>
             </Button>
-            <ComboBox fx:id="editarCartaBox" prefWidth="150.0" promptText="Editar/Ver" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-            <Button fx:id="proxima" mnemonicParsing="false" text="Próxima" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <ComboBox fx:id="editarCartaBox" onAction="#aoClicarEditar" prefWidth="150.0" promptText="Editar/Ver" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+            <Button fx:id="proxima" mnemonicParsing="false" onAction="#aoClicarProxima" text="Próxima" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="10.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="anterior" mnemonicParsing="false" text="Anterior" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <Button fx:id="anterior" mnemonicParsing="false" onAction="#aoClicarAnterior" text="Anterior" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets bottom="10.0" right="80.0" />
                </GridPane.margin>

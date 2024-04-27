@@ -41,6 +41,7 @@
               </items>
             </MenuButton>
             <Label fx:id="escolhido" text="escolhido" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button fx:id="regressa" mnemonicParsing="false" onAction="#aoClicarRegressa" text="Retorna" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>
