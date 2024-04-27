@@ -264,7 +264,7 @@ public class Dados {
             stmt.setString(1, carta.getNomeDoBaralho());
             stmt.setString(2, carta.getPergunta());
             stmt.setString(3, carta.getResposta());
-            System.out.println("Lol:" + carta.getEasinessFactor());
+
             stmt.setDouble(4, carta.getEasinessFactor());
             stmt.setString(5, carta.getDefinicao1());
             stmt.setString(6, carta.getDefinicao2());
@@ -682,7 +682,7 @@ public class Dados {
         try {
             Connection conn = DriverManager.getConnection(url, user, password);
 
-            String query = "SELECT OrdemDaRepeticao  FROM cartas WHERE ID = ?";
+            String query = "SELECT EF  FROM cartas WHERE ID = ?";
 
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, ID);

@@ -15,6 +15,7 @@ CREATE TABLE Cartas(
     PRIMARY KEY (ID)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+SELECT EF ,Intervalo FROM cartas WHERE NomeBaralho = 'Teste10v6';
 
 DROP TABLE Cartas;
 
