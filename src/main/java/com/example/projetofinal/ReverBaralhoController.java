@@ -49,7 +49,7 @@ public class ReverBaralhoController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        ObservableList<Baralho> lista = Dados.encheALista();
+        ObservableList<Baralho> lista = Dados.encheAListaDoRever();
         colunaNome.setCellValueFactory(new PropertyValueFactory<Baralho, String>("nome"));
         colunaCartas.setCellValueFactory(new PropertyValueFactory<Baralho,Integer>("numeroDeCartas"));
         tabela.setItems(lista);

@@ -55,6 +55,27 @@ public class RevisorFrontEndController {
         this.nomeDoBaralho = nomeDoBaralho;
     }
 
+    public void refresh()
+    {
+
+
+
+        resposta.setVisible(false);
+        mostraD1.setVisible(false);
+        mostraD2.setVisible(false);
+        definicao1.setVisible(false);
+        definicao2.setVisible(false);
+        proxima.setVisible(false);
+        entendimento.setVisible(false);
+        escolhido.setVisible(false);
+        mostraD1.setMouseTransparent(true);
+        mostraD2.setMouseTransparent(true);
+        proxima.setMouseTransparent(true);
+        entendimento.setMouseTransparent(true);
+        ID = Dados.encontraIDMaisBaixoDoBaralhoDasRevisiveis(nomeDoBaralho);///para alterar mais tarde
+        pergunta.setText(Dados.encheAreaDoTextoDePergunta(ID));
+    }
+
 
     @FXML
     protected void aoClicarMostra(){///vamos começar com 3 cartas depois vamos ter base de dados e uma classe de Bacckend
@@ -99,6 +120,7 @@ public class RevisorFrontEndController {
         escolhido.setText("0");
         escolhido.setVisible(true);
         resposta.setVisible(false);
+        qualidade= 0;
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -108,6 +130,7 @@ public class RevisorFrontEndController {
         escolhido.setText("1");
         escolhido.setVisible(true);
         resposta.setVisible(false);
+        qualidade = 1;
 
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
@@ -118,6 +141,7 @@ public class RevisorFrontEndController {
         escolhido.setText("2");
         escolhido.setVisible(true);
         resposta.setVisible(false);
+        qualidade =2;
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -127,6 +151,7 @@ public class RevisorFrontEndController {
         escolhido.setText("3");
         escolhido.setVisible(true);
         resposta.setVisible(false);
+        qualidade= 3;
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -136,6 +161,7 @@ public class RevisorFrontEndController {
         escolhido.setText("4");
         escolhido.setVisible(true);
         resposta.setVisible(false);
+        qualidade=4;
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
@@ -145,28 +171,17 @@ public class RevisorFrontEndController {
         escolhido.setText("5");
         escolhido.setVisible(true);
         resposta.setVisible(false);
+        qualidade=5;
         ///Depois temos que implementar mais coisas no Backend noutra Classe
     }
 
-    public void refresh()
+    @FXML
+    protected void aoClicarProxima()
     {
-
-
-
-        resposta.setVisible(false);
-        mostraD1.setVisible(false);
-        mostraD2.setVisible(false);
-        definicao1.setVisible(false);
-        definicao2.setVisible(false);
-        proxima.setVisible(false);
-        entendimento.setVisible(false);
-        escolhido.setVisible(false);
-        mostraD1.setMouseTransparent(true);
-        mostraD2.setMouseTransparent(true);
-        proxima.setMouseTransparent(true);
-        entendimento.setMouseTransparent(true);
-        ID = Dados.idMaisBaixoDoBaralho(nomeDoBaralho);///para alterar mais tarde
-        pergunta.setText(Dados.encheAreaDoTextoDePergunta(ID));
+        Dados.algoritmoQueReve(ID,qualidade);
+        mostraOVerso.setVisible(true);
+        mostraOVerso.setMouseTransparent(false);
+        refresh();
     }
 
 

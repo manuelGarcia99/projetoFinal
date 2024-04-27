@@ -22,14 +22,14 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TextArea fx:id="pergunta" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-            <TextArea fx:id="resposta" prefHeight="200.0" prefWidth="200.0" />
+            <TextArea fx:id="resposta" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+            <TextArea fx:id="pergunta" prefHeight="200.0" prefWidth="200.0" />
             <Button fx:id="mostraOVerso" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#aoClicarMostra" text="Mostrar Resposta" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
             <Button fx:id="mostraD1" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#aoClicarMostraD1" text="Mostrar D1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BASELINE" />
             <Button fx:id="mostraD2" mnemonicParsing="false" onAction="#aoClicarMostraD2" text="Mostrar D2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BASELINE" />
             <Label fx:id="definicao1" text="Invisivel D1" GridPane.rowIndex="2" />
             <Label fx:id="definicao2" alignment="CENTER_RIGHT" text="Invisivel D2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <Button fx:id="proxima" mnemonicParsing="false" text="Próxima" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button fx:id="proxima" mnemonicParsing="false" onAction="#aoClicarProxima" text="Próxima" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <MenuButton fx:id="entendimento" mnemonicParsing="false" text="Entendimento" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
               <items>
                 <MenuItem fx:id="opcao0" mnemonicParsing="false" onAction="#aoClicarOpcao0" text="0: Branca completa" />

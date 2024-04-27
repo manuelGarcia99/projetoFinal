@@ -1,6 +1,8 @@
 package com.example.projetofinal;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.Date;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,6 +22,39 @@ public class Dados {
             String query = "SELECT DISTINCT B.NomeBaralho, (SELECT " +
                     " COUNT(*) FROM Cartas C" +
                     " WHERE C.NomeBaralho = B.NomeBaralho) AS Cartas FROM Baralhos B";
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                String nome = rs.getString("NomeBaralho");
+                int quantidade = rs.getInt("Cartas");
+                lista.add(new Baralho(nome, quantidade));
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
+    public static ObservableList<Baralho> encheAListaDoRever() {
+        ObservableList<Baralho> lista = FXCollections.observableArrayList();
+
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+            Statement stmt = conn.createStatement();
+
+            String query = "SELECT DISTINCT B.NomeBaralho, (SELECT " +
+                    " COUNT(*) FROM Cartas C WHERE ((DATEDIFF(CURDATE(),DataUltimoUso) > C.Intervalo)" +
+                    " OR Intervalo IS NULL  )" +
+                    " AND C.NomeBaralho = B.NomeBaralho ) AS Cartas FROM Baralhos B";
 
             ResultSet rs = stmt.executeQuery(query);
 
@@ -224,18 +259,18 @@ public class Dados {
             Connection conn = DriverManager.getConnection(url, user, password);
 
 
-            String query = "INSERT INTO cartas( NomeBaralho,Pergunta, Resposta,   EF,  Def1, Def2,  Intervalo, PrimeiroTermo, SegundoTermo, OrdemDaRepeticao) VALUES(?,?,?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO cartas( NomeBaralho,Pergunta, Resposta,   EF,  Def1, Def2,  PrimeiroTermo, SegundoTermo, OrdemDaRepeticao) VALUES(?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, carta.getNomeDoBaralho());
             stmt.setString(2, carta.getPergunta());
             stmt.setString(3, carta.getResposta());
+            System.out.println("Lol:" + carta.getEasinessFactor());
             stmt.setDouble(4, carta.getEasinessFactor());
             stmt.setString(5, carta.getDefinicao1());
             stmt.setString(6, carta.getDefinicao2());
-            stmt.setInt(7, carta.getIntervalo());
-            stmt.setString(8, carta.getTermo1());
-            stmt.setString(9, carta.getTermo2());
-            stmt.setInt(10,carta.getOrdemDaRepeticao());
+            stmt.setString(7, carta.getTermo1());
+            stmt.setString(8, carta.getTermo2());
+            stmt.setInt(9,carta.getOrdemDaRepeticao());
             int rowsAffected = stmt.executeUpdate();
 
             System.out.println(rowsAffected + " cartas criadas");
@@ -637,17 +672,309 @@ public class Dados {
             System.out.println("General Error: " + e.getMessage());
             e.printStackTrace();
         }
+        System.out.println("Classe dados OR desta: " + ordem);
         return ordem;
     }
 
-    public static int encontraEF(int ID)
+    public static double encontraEF(int ID)
     {
-        
+        double EF = -1.0;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT OrdemDaRepeticao  FROM cartas WHERE ID = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            EF = rs.getDouble(1);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("Classe dados EF desta:" + EF);
+        return EF;
     }
+
+    public static int encontraIntervaloAtual(int ID)
+    {
+        int intervalo = -1;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT Intervalo  FROM cartas WHERE ID = ?";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, ID);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            intervalo = rs.getInt(1);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("Classe dados intervalo atual desta antes do algoritmo: " + intervalo);
+        return intervalo;
+    }
+
+    ///Dados do revisor
+
+    public static void carregaIntervaloAtual(int intervaloAtual, int ID)
+    {
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET Intervalo = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, intervaloAtual);
+            stmt.setInt(2,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregaOrdemDeRepeticao(int OR, int ID)
+    {
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET OrdemDaRepeticao = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, OR);
+            stmt.setInt(2,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregaDataAtual(LocalDate localDate, int ID)
+    {
+        java.sql.Date date = java.sql.Date.valueOf(localDate);
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET DataUltimoUso = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setDate(1, date);
+            stmt.setInt(2,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregaEF(double EF, int ID)
+    {
+
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET EF = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setDouble(1, EF);
+            stmt.setInt(2,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregaIntervaloAnterior(int intervaloAnterior, int ID)
+    {
+
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "UPDATE cartas SET IntervaloAnterior = ? WHERE ID = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, intervaloAnterior);
+            stmt.setInt(2,ID);
+            int rowsAffected = stmt.executeUpdate();
+
+            System.out.println(rowsAffected + " cartas alteradas");
+
+            conn.close();
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("Cheguei aqui");
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
 
     public static void algoritmoQueReve(int ID, int qualidadeDaResposta)
     {
+        double EF = encontraEF(ID);
+        if(qualidadeDaResposta >= 3) {
+            int OR = encontraOrdemDeRepeticao(ID), intervaloAtual, intervaloAnterior;
+
+            LocalDate agora ;
 
 
+            if(OR == 1) {
+                intervaloAtual = 1;
+                OR++;
+                agora= LocalDate.now();
+                EF = EF + (0.1- (5- qualidadeDaResposta) * (0.08 + (5- qualidadeDaResposta)* 0.02));
+
+                carregaIntervaloAtual(intervaloAtual,ID);
+                carregaOrdemDeRepeticao(OR,ID);
+                carregaDataAtual(agora,ID);
+                if(EF < 1.3)
+                    EF = 1.3;
+                carregaEF(EF, ID);
+                //carregar o intervalo atual e OR e a data e o EF
+            }
+            else if (OR == 2) {
+                intervaloAtual = Dados.encontraIntervaloAtual(ID);
+                intervaloAnterior = intervaloAtual;
+                EF = EF + (0.1- (5- qualidadeDaResposta) * (0.08 + (5- qualidadeDaResposta)* 0.02));
+                intervaloAtual = 6;
+                OR++;
+                agora= LocalDate.now();
+
+
+                carregaIntervaloAtual(intervaloAtual,ID);
+                carregaIntervaloAnterior(intervaloAnterior,ID);
+                carregaOrdemDeRepeticao(OR,ID);
+                carregaDataAtual(agora,ID);
+                if(EF < 1.3)
+                    EF = 1.3;
+                carregaEF(EF,ID);
+                //carregar o intervalo atual e anterior e OR e a data e o EF
+            }
+            else{
+                intervaloAtual = Dados.encontraIntervaloAtual(ID);
+                intervaloAnterior = intervaloAtual;
+                EF = EF + (0.1- (5- qualidadeDaResposta) * (0.08 + (5- qualidadeDaResposta)* 0.02));
+                intervaloAtual = (int) (intervaloAnterior * EF);
+                OR++;
+                agora= LocalDate.now();
+                carregaIntervaloAtual(intervaloAtual,ID);
+                carregaIntervaloAnterior(intervaloAnterior,ID);
+                if(EF < 1.3)
+                    EF = 1.3;
+                carregaEF(EF,ID);
+                carregaOrdemDeRepeticao(OR, ID);
+                carregaDataAtual(agora,ID);
+
+                //carregar o intervalo atual, o anterior, ef e OR e a data
+            }
+        }
+        else{
+            EF = EF + (0.1- (5- qualidadeDaResposta) * (0.08 + (5- qualidadeDaResposta)* 0.02));
+            if(EF < 1.3)
+                EF = 1.3;
+            carregaEF(EF, ID);
+            //carrega o EF
+
+            //volta para uma carta aleatoria qualquer
+        }
+
+    }
+
+    public static int encontraIDMaisBaixoDoBaralhoDasRevisiveis(String nomeDoBaralho)
+    {
+        int idMaisBaixo = 0;
+        try {
+            Connection conn = DriverManager.getConnection(url, user, password);
+
+            String query = "SELECT MIN(ID)  FROM cartas WHERE (NomeBaralho = ?)"+
+                    "AND ((DATEDIFF(CURDATE(),DataUltimoUso) > Intervalo)OR Intervalo IS NULL  )";
+
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, nomeDoBaralho);
+
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            idMaisBaixo = rs.getInt(1);
+            rs.close();
+            stmt.close();
+            conn.close();
+
+
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("General Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return idMaisBaixo;
     }
 }
