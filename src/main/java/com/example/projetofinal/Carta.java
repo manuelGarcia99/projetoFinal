@@ -35,10 +35,8 @@ public  class Carta {
     private Date dataUltimoUso;
 
     Carta( String pergunta, String resposta, String termo1, String definicao1, String termo2, String definicao2, String nomeDoBaralho)
-    {///Depois temos que limpar os baralhos que já temos
+    {
         this.easinessFactor = 2.5;
-        //this.id = id;//Vamos ter que trabalhar com a base de dados
-
         this.pergunta = pergunta;
         this.resposta = resposta;
         this.termo1 = termo1;

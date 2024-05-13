@@ -2,7 +2,7 @@ package com.example.projetofinal;
 
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.Date;
+
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -803,7 +803,7 @@ public class Dados {
             String query = "UPDATE cartas SET DataUltimoUso = ? WHERE ID = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setDate(1, date);
-            stmt.setInt(2,ID);
+            stmt.setInt(2, ID);
             int rowsAffected = stmt.executeUpdate();
 
             System.out.println(rowsAffected + " cartas alteradas");
@@ -812,12 +812,7 @@ public class Dados {
             stmt.close();
 
         } catch (SQLException e) {
-            System.out.println("Cheguei aqui");
-            System.out.println("SQL Error: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("General Error: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
