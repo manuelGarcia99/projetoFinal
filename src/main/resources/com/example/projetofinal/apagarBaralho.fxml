@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-
+<!---->
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projetofinal.ApagarBaralhoController">
    <children>
       <Button fx:id="regressa" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#aoClicarRegresso" text="Retornar" />

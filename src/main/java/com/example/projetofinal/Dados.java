@@ -9,9 +9,9 @@ import javafx.collections.ObservableList;
 
 
 public class Dados {
-    private static String url = "jdbc:mysql://localhost:3306/projetolicenciatura";
-    private static String user = "root";
-    private static String password = "SimpsonsTheMovie2012";
+    private static String url = "jdbc:mysql://83.212.82.184:3306/projetolicenciatura";
+    private static String user = "pc";
+    private static String password = "RKFTEGB4uZ";
     public static ObservableList<Baralho> encheALista() {
         ObservableList<Baralho> lista = FXCollections.observableArrayList();
 
